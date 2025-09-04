@@ -6,8 +6,26 @@
     <title>Unity Web Player | WebGL 2d</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
   <body>
+    <div id="orientation-overlay" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  color: white;
+  font-size: 2em;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  flex-direction: column;
+">
+  <div style="padding: 20px;">Please rotate your device to portrait mode</div>
+</div>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
@@ -129,7 +147,48 @@
             };
 
       document.body.appendChild(script);
+function forcePortraitStyle() {
+  const canvas = document.getElementById("unity-canvas");
+  const container = document.getElementById("unity-container");
 
+  const isLandscape = window.innerWidth > window.innerHeight;
+
+  if (isLandscape) {
+    const scale = window.innerHeight / window.innerWidth;
+
+    // Rotate canvas -90 degrees to simulate portrait layout
+    canvas.style.transform = `rotate(-90deg) scale(${scale})`;
+    canvas.style.transformOrigin = "center center";
+
+    // Resize canvas and container to fit rotated view
+    canvas.style.width = window.innerHeight + "px";
+    canvas.style.height = window.innerWidth + "px";
+
+    container.style.width = window.innerHeight + "px";
+    container.style.height = window.innerWidth + "px";
+
+    // Reposition to center
+    canvas.style.position = "absolute";
+    canvas.style.left = (window.innerWidth - window.innerHeight) / 2 + "px";
+    canvas.style.top = (window.innerHeight - window.innerWidth) / 2 + "px";
+  } else {
+    // Normal portrait mode
+    canvas.style.transform = "";
+    canvas.style.transformOrigin = "";
+    canvas.style.position = "";
+    canvas.style.left = "";
+    canvas.style.top = "";
+
+    canvas.style.width = "100vw";
+    canvas.style.height = "100vh";
+    container.style.width = "100vw";
+    container.style.height = "100vh";
+  }
+}
+
+window.addEventListener("orientationchange", forcePortraitStyle);
+window.addEventListener("resize", forcePortraitStyle);
+forcePortraitStyle();
     </script>
   </body>
 </html>
