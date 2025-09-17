@@ -7,26 +7,41 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <style>
-      #rotate-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
-  color: white;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-size: 2em;
-  padding: 20px;
-}
-#rotate-screen .message
-{
-  max-width: 80%;
-}
+ #rotate-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 5vw; /* responsive padding */
+    box-sizing: border-box;
+  }
+
+  #rotate-screen .message {
+    font-size: 6vw; /* responsive text size */
+    max-width: 90vw; /* prevent overflow */
+    line-height: 1.4;
+  }
+
+  /* Optional: smooth font scaling for smaller devices */
+  @media (min-width: 768px) {
+    #rotate-screen .message {
+      font-size: 3vw;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    #rotate-screen .message {
+      font-size: 2vw;
+    }
+  }
 </style>
 
   </head>
@@ -158,8 +173,9 @@
 function CheckOrientation()
 {
   const isPortrait = window.innerHeight > window.innerWidth
+   const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const overlay = document.getElementById("rotate-screen");
-  if(isPortrait)
+  if(isPortrait && isMobile)
   overlay.style.display='flex'
 else
 overlay.style.display='none'
