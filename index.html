@@ -6,6 +6,29 @@
     <title>Unity Web Player | WebGL 2d</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+      #rotate-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2em;
+  padding: 20px;
+}
+#rotate-screen .message
+{
+  max-width: 80%;
+}
+</style>
+
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -22,6 +45,11 @@
         <div id="unity-fullscreen-button"></div>
         <div id="unity-build-title">WebGL 2d</div>
       </div>
+      
+      <div id="rotate-screen" style="display: none;">
+        <div class="message">please rotate your device to landscape</div>
+      </div>
+
     </div>
     <script>
       var canvas = document.querySelector("#unity-canvas");
@@ -127,8 +155,23 @@
                 alert(message);
               });
             };
+function CheckOrientation()
+{
+  const isPortrait = window.innerHeight > window.innerWidth
+    const overlay = document.getElementById("rotate-screen");
+  if(isPortrait)
+  overlay.style.display='flex'
+else
+overlay.style.display='none'
+
+}
+window.addEventListener('load',CheckOrientation)
+window.addEventListener('resize',CheckOrientation)
+window.addEventListener('orientationchange',CheckOrientation)
 
       document.body.appendChild(script);
+
+
 
     </script>
   </body>
